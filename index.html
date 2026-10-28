@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кинозал «Орион» — учебное бронирование мест</title>
+  <meta name="description" content="Учебное демо бронирования мест в кинотеатре: афиша, схема зала, сеансы, сумма и мои брони.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Подключение стилей -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="56" height="56" rx="18" fill="url(#logo-grad)"/>
+        <path d="M12 20H44M12 36H44M20 12V44M36 12V44" stroke="#1A1405" stroke-width="2" stroke-linecap="round" opacity="0.15"/>
+        <circle cx="28" cy="28" r="14" stroke="#1A1405" stroke-width="3"/>
+        <circle cx="28" cy="28" r="18" stroke="#1A1405" stroke-width="1.5" stroke-dasharray="3 6" opacity="0.5"/>
+        <path d="M24 22L33 28L24 34V22Z" fill="#1A1405"/>
+        <defs>
+          <linearGradient id="logo-grad" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFD479"/>
+            <stop offset="1" stop-color="#F2B544"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div class="brand-name">Кинозал «Орион»</div>
+        <div class="brand-sub">учебное бронирование мест</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="badge">Учебное демо</span>
+      <button class="btn btn-ghost" id="resetDemo" type="button">Сбросить демо</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="column-main">
+
+      <section class="panel filters-panel" aria-label="Афиша и фильтры">
+        <div class="panel-head">
+          <h2>Афиша и сеансы</h2>
+        </div>
+        <div class="filter-row">
+          <div class="filter-block--price">
+            <label class="filter-label" for="maxPrice">
+              Цена места до <b id="maxPriceValue">650 ₽</b>
+            </label>
+            <input class="range" id="maxPrice" type="range" min="300" max="650" step="50" value="650">
+          </div>
+          <button class="btn btn-ghost" id="resetFilters" type="button">Сбросить фильтры</button>
+        </div>
+        <div class="movies-list" id="moviesList"></div>
+      </section>
+
+      <section class="panel hall-panel" aria-label="Схема зала">
+        <div class="panel-head">
+          <h2>Схема зала</h2>
+          <span class="panel-hint" id="hallCaption"></span>
+        </div>
+        <div class="hall" id="hall"></div>
+        <ul class="legend">
+          <li><span class="legend-seat is-free" aria-hidden="true"></span>свободно</li>
+          <li><span class="legend-seat is-selected" aria-hidden="true"></span>выбрано</li>
+          <li><span class="legend-seat is-occupied" aria-hidden="true"></span>занято</li>
+          <li><span class="legend-seat is-filtered" aria-hidden="true"></span>скрыто фильтром</li>
+        </ul>
+      </section>
+
+      <section class="panel list-panel" aria-label="Список мест">
+        <div class="panel-head">
+          <h2>Список мест</h2>
+          <span class="panel-hint" id="listHint"></span>
+        </div>
+        <div class="seat-list" id="seatList"></div>
+      </section>
+
+    </div>
+
+    <aside class="column-side">
+
+      <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+      <section class="panel ticket" aria-label="Оформление брони">
+        <div class="ticket-top">
+          <div class="eyebrow" id="ticketMovie">Фильм</div>
+          <h2 id="cardTitle">—</h2>
+          <p class="muted" id="cardMeta"></p>
+        </div>
+        <div class="perf" aria-hidden="true"></div>
+        <div class="ticket-body">
+          <div class="field-block">
+            <span class="field-label">Места</span>
+            <div class="chips" id="selectedChips"></div>
+            <p class="field-error" id="seatsError" role="alert"></p>
+          </div>
+          <div class="field-block">
+            <label class="field-label" for="viewerName">Имя зрителя</label>
+            <input class="input" id="viewerName" type="text" name="viewerName" maxlength="40" autocomplete="name" placeholder="Например, Анна">
+            <p class="field-error" id="nameError" role="alert"></p>
+          </div>
+          <div class="total-row">
+            <span>Итого</span>
+            <strong id="totalSum">0 ₽</strong>
+          </div>
+          <button class="btn btn-primary btn-block" id="confirmBtn" type="button">
+            Подтвердить бронь
+          </button>
+          <p class="fineprint">
+            Не более 6 мест за одну бронь. Учебное демо — реальная бронь не оформляется.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel bookings-panel" aria-label="Мои брони">
+        <h2>Мои брони</h2>
+        <div id="bookings"></div>
+      </section>
+
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>Учебное демо: бронирования сохраняются только в этом браузере.</p>
+  </footer>
+
+  <!-- Подключение данных и скриптов -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
